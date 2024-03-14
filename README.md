@@ -1,4 +1,4 @@
-# Prokrust a.k.a. Damastes
+# Racketrust a.k.a. Damastes
 
 Ever got frustrated with an audiobook like this one?
 
@@ -28,31 +28,31 @@ Ever got frustrated with an audiobook like this one?
     │   ├── 02 Track 2.mp3
     ...
 
-Try **Prokrust**, this way:
+Try **Racketrust**, this way:
 
-    Robinson Crusoe $ prokrust -via 'Daniel Defoe' -m 'Robinson Crusoe' . ~/MyAudioLibrary
+    Robinson Crusoe $ racketrust -via 'Daniel Defoe' -m 'Robinson Crusoe' . ~/MyAudioLibrary
 
--   `MyAudioLibrary` must exist
+- `MyAudioLibrary` must exist
 
 or just like this:
 
-    Robinson Crusoe $ prokrust -a 'Daniel Defoe' -u 'Robinson Crusoe' . ~/MyAudioLibrary
+    Robinson Crusoe $ racketrust -a 'Daniel Defoe' -u 'Robinson Crusoe' . ~/MyAudioLibrary
 
-Notice the tags set by **Prokrust**.
+Notice the tags set by **Racketrust**.
 
 ## Description
 
-**Prokrust** is a CLI utility for basic processing and copying of audio
+**Racketrust** is a CLI utility for basic processing and copying of audio
 albums, mostly slovenly built audiobooks, possibly to cheap mobile
 devices. Common poor design problems: track number tags missing or
 incorrect, directory and/or file names enumerated without leading
 zeroes, etc.
 
 Meanwhile, one cannot listen to an audiobook with the tracks in the
-wrong order. **Prokrust** tries hard to sort the tracks properly. To
+wrong order. **Racketrust** tries hard to sort the tracks properly. To
 check the track order visually use `-v` or `-vi`, and avoid `-u`.
 
-**Prokrust** renames directories and audio files, replacing tags, if
+**Racketrust** renames directories and audio files, replacing tags, if
 necessary, while copying the album to destination. Source files and
 directories are not modified in any way. Files are copied sequentially,
 by default file number one first, optionally in reverse order, as some
@@ -60,87 +60,90 @@ mobile devices are copy-order sensitive.
 
 ## General syntax
 
-    $ prokrust [<options>] <source directory> <destination directory>
+    $ racketrust [<options>] <source directory> <destination directory>
 
 ## Options
 
-`-h, --help` *short description and options*
+`-h, --help` _short description and options_
 
-`-V, --version` *package version*
+`-V, --version` _package version_
 
-`-v, --verbose` *unless verbose, just progress bar is shown*
+`-v, --verbose` _unless verbose, just progress bar is shown_
 
-`-d, --drop-tracknumber` *do not set track numbers*
+`-d, --drop-tracknumber` _do not set track numbers_
 
-`-s, --strip-decorations` *strip file and directory name decorations*
+`-s, --strip-decorations` _strip file and directory name decorations_
 
-`-f, --file-title` *use file name for title tag*
+`-f, --file-title` _use file name for title tag_
 
-`-F, --file-title-num` *use numbered file name for title tag*
+`-F, --file-title-num` _use numbered file name for title tag_
 
-`-x, --sort-lex` *sort files lexicographically*
+`-x, --sort-lex` _sort files lexicographically_
 
-`-t, --tree-dst` *retain the tree structure of the source album at
-destination*
+`-t, --tree-dst` _retain the tree structure of the source album at
+destination_
 
-`-p, --drop-dst` *do not create destination directory*
+`-p, --drop-dst` _do not create destination directory_
 
-`-r, --reverse` *copy files in reverse order (number one file is the
-last to be copied)*
+`-r, --reverse` _copy files in reverse order (number one file is the
+last to be copied)_
 
-`-w, --overwrite` *silently remove existing destination directory (not
-recommended)*
+`-w, --overwrite` _silently remove existing destination directory (not
+recommended)_
 
-`-y, --dry-run` *without actually modifying anything (trumps* `-w`,
-*too)*
+`-y, --dry-run` _without actually modifying anything (trumps_ `-w`,
+_too)_
 
-`-c, --count` *just count the files*
+`-c, --count` _just count the files_
 
-`-i, --prepend-subdir-name` *prepend current subdirectory name to a file
-name*
+`-i, --prepend-subdir-name` _prepend current subdirectory name to a file
+name_
 
-`-e, --file-type TEXT` *accept only audio files of the specified type,
-e.g.* `-e flac`, `-e '*64kb.mp3'`
+`-e, --file-type TEXT` _accept only audio files of the specified type,
+e.g._ `-e flac`, `-e '*64kb.mp3'`
 
-`-u, --unified-name TEXT` *destination root directory name and file
-names are based on* `TEXT`, *serial number prepended, file extensions
-retained*
+`-u, --unified-name TEXT` _destination root directory name and file
+names are based on_ `TEXT`, _serial number prepended, file extensions
+retained_
 
-`-a, --artist TEXT` *artist tag*
+`-a, --artist TEXT` _artist tag_
 
-`-m, --album TEXT` *album tag*
+`-m, --album TEXT` _album tag_
 
-`-b, --album-num INTEGER` *0..99; prepend* `INTEGER` *to the destination
-root directory name*
+`-b, --album-num INTEGER` _0..99; prepend_ `INTEGER` _to the destination
+root directory name_
 
 ## Examples
 
-    Source Album $ prokrust -c . .
+    Source Album $ racketrust -c . .
 
--   All the files in *Source Album* get checked. Destination directory
-    is required (and ignored).
-
-```{=html}
-<!-- -->
-```
-    Source Album $ prokrust -y . .
-
--   Dry run: everything is done according to any options; no new files
-    or directories created, destination is left undisturbed.
+- All the files in _Source Album_ get checked. Destination directory
+  is required (and ignored).
 
 ```{=html}
 <!-- -->
 ```
-    Source Album $ prokrust -a "Peter Crowcroft" -m "Mice All Over" . /run/media/user/F8950/Audiobooks/
 
--   Destination directory */run/media/user/F8950/Audiobooks/Source
-    Album/* is created;
--   Track numbers are set according to the natural sort order,
-    regardless of the absence of the original leading zeroes:
+    Source Album $ racketrust -y . .
+
+- Dry run: everything is done according to any options; no new files
+  or directories created, destination is left undisturbed.
 
 ```{=html}
 <!-- -->
 ```
+
+    Source Album $ racketrust -a "Peter Crowcroft" -m "Mice All Over" . /run/media/user/F8950/Audiobooks/
+
+- Destination directory _/run/media/user/F8950/Audiobooks/Source
+  Album/_ is created;
+- Track numbers are set according to the natural sort order,
+  regardless of the absence of the original leading zeroes:
+
+```{=html}
+<!-- -->
+```
+
     01-mice-all-over-1.mp3
     02-mice-all-over-2.mp3
     ...
@@ -149,17 +152,18 @@ root directory name*
     11-mice-all-over-11.mp3
     ...
 
--   *Artist* is set to *Peter Crowcroft*;
--   *Album* is set to *Mice All Over*;
--   *Title* is set to *1 P.C. - Mice All Over* for the first file, all
-    titles enumerated;
+- _Artist_ is set to _Peter Crowcroft_;
+- _Album_ is set to _Mice All Over_;
+- _Title_ is set to _1 P.C. - Mice All Over_ for the first file, all
+  titles enumerated;
 
 ```{=html}
 <!-- -->
 ```
-    Source Album $ prokrust -dst . /run/media/user/F8950/Audiobooks/
 
--   *Source Album* directory is copied to
-    */run/media/user/F8950/Audiobooks/* in its entirety, without
-    modification; sequential copy order, natural or lexicographical, is
-    guaranteed.
+    Source Album $ racketrust -dst . /run/media/user/F8950/Audiobooks/
+
+- _Source Album_ directory is copied to
+  _/run/media/user/F8950/Audiobooks/_ in its entirety, without
+  modification; sequential copy order, natural or lexicographical, is
+  guaranteed.
