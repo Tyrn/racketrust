@@ -1,53 +1,165 @@
-[![Racket](https://img.shields.io/badge/-Made%20with%20Racket-darkred?logo=racket)](https://racket-lang.org)
-[![Racket](https://img.shields.io/badge/-Made%20with%20Racket%20Templates-lightgrey?logo=racket)](https://github.com/racket-templates)
-[![Discourse users](https://img.shields.io/discourse/users?label=Discuss%20on%20Racket%20Discourse&logo=racket&server=https%3A%2F%2Fracket.discourse.group)](https://racket.discourse.group/t/racket-templates-project/156?u=spdegabrielle)
-[![Racket Discord](https://img.shields.io/discord/571040468092321801?label=Chat%20on%20Racket%20Discord&logo=racket)](https://discord.gg/6Zq8sH5)
+# Prokrust a.k.a. Damastes
 
-cli-command
-===========
+Ever got frustrated with an audiobook like this one?
 
-A working example of CLI command you can use to create your own command line app.
+    Robinson Crusoe $ ls
+    'Disc 1'   'Disc 14'  'Disc 3'  'Disc 8'
+    'Disc 10'  'Disc 15'  'Disc 4'  'Disc 9'
+    'Disc 11'  'Disc 16'  'Disc 5'
+    'Disc 12'  'Disc 17'  'Disc 6'
+    'Disc 13'  'Disc 2'   'Disc 7'
 
-# How To Install
+    Robinson Crusoe $ tree
+    ...
+    ├── Disc 17
+    │   ├── 01 Track 1.mp3
+    │   ├── 02 Track 2.mp3
+    ...
+    │   ├── 13 Track 13.mp3
+    ├── Disc 2
+    │   ├── 01 Track 1.mp3
+    │   ├── 02 Track 2.mp3
+    │   ├── 03 Track 3.mp3
+    ...
+    │   ├── 15 Track 15.mp3
+    │   └── desktop.ini
+    ├── Disc 3
+    │   ├── 01 Track 1.mp3
+    │   ├── 02 Track 2.mp3
+    ...
 
-1. [Set your PATH environment variable](https://github.com/racket/racket/wiki/Set-your-PATH-environment-variable) 
-so you can use `raco` and other Racket command line functions.
-2. either look for `from-template` in the DrRacket menu **File|Package Manager**, or run the `raco` command:
-```bash
-raco pkg install from-template
+Try **Prokrust**, this way:
+
+    Robinson Crusoe $ prokrust -via 'Daniel Defoe' -m 'Robinson Crusoe' . ~/MyAudioLibrary
+
+-   `MyAudioLibrary` must exist
+
+or just like this:
+
+    Robinson Crusoe $ prokrust -a 'Daniel Defoe' -u 'Robinson Crusoe' . ~/MyAudioLibrary
+
+Notice the tags set by **Prokrust**.
+
+## Description
+
+**Prokrust** is a CLI utility for basic processing and copying of audio
+albums, mostly slovenly built audiobooks, possibly to cheap mobile
+devices. Common poor design problems: track number tags missing or
+incorrect, directory and/or file names enumerated without leading
+zeroes, etc.
+
+Meanwhile, one cannot listen to an audiobook with the tracks in the
+wrong order. **Prokrust** tries hard to sort the tracks properly. To
+check the track order visually use `-v` or `-vi`, and avoid `-u`.
+
+**Prokrust** renames directories and audio files, replacing tags, if
+necessary, while copying the album to destination. Source files and
+directories are not modified in any way. Files are copied sequentially,
+by default file number one first, optionally in reverse order, as some
+mobile devices are copy-order sensitive.
+
+## General syntax
+
+    $ prokrust [<options>] <source directory> <destination directory>
+
+## Options
+
+`-h, --help` *short description and options*
+
+`-V, --version` *package version*
+
+`-v, --verbose` *unless verbose, just progress bar is shown*
+
+`-d, --drop-tracknumber` *do not set track numbers*
+
+`-s, --strip-decorations` *strip file and directory name decorations*
+
+`-f, --file-title` *use file name for title tag*
+
+`-F, --file-title-num` *use numbered file name for title tag*
+
+`-x, --sort-lex` *sort files lexicographically*
+
+`-t, --tree-dst` *retain the tree structure of the source album at
+destination*
+
+`-p, --drop-dst` *do not create destination directory*
+
+`-r, --reverse` *copy files in reverse order (number one file is the
+last to be copied)*
+
+`-w, --overwrite` *silently remove existing destination directory (not
+recommended)*
+
+`-y, --dry-run` *without actually modifying anything (trumps* `-w`,
+*too)*
+
+`-c, --count` *just count the files*
+
+`-i, --prepend-subdir-name` *prepend current subdirectory name to a file
+name*
+
+`-e, --file-type TEXT` *accept only audio files of the specified type,
+e.g.* `-e flac`, `-e '*64kb.mp3'`
+
+`-u, --unified-name TEXT` *destination root directory name and file
+names are based on* `TEXT`, *serial number prepended, file extensions
+retained*
+
+`-a, --artist TEXT` *artist tag*
+
+`-m, --album TEXT` *album tag*
+
+`-b, --album-num INTEGER` *0..99; prepend* `INTEGER` *to the destination
+root directory name*
+
+## Examples
+
+    Source Album $ prokrust -c . .
+
+-   All the files in *Source Album* get checked. Destination directory
+    is required (and ignored).
+
+```{=html}
+<!-- -->
 ```
-3. 
-```bash
-raco new cli-command <destination-dir>
+    Source Album $ prokrust -y . .
+
+-   Dry run: everything is done according to any options; no new files
+    or directories created, destination is left undisturbed.
+
+```{=html}
+<!-- -->
 ```
-If you omit `<destination-dir>`, the command will add copy the template to a folder called `cli-command` in the current folder.
+    Source Album $ prokrust -a "Peter Crowcroft" -m "Mice All Over" . /run/media/user/F8950/Audiobooks/
 
-# How to use
+-   Destination directory */run/media/user/F8950/Audiobooks/Source
+    Album/* is created;
+-   Track numbers are set according to the natural sort order,
+    regardless of the absence of the original leading zeroes:
 
-This is working example that you can change to suit your needs.
+```{=html}
+<!-- -->
+```
+    01-mice-all-over-1.mp3
+    02-mice-all-over-2.mp3
+    ...
+    09-mice-all-over-9.mp3
+    10-mice-all-over-10.mp3
+    11-mice-all-over-11.mp3
+    ...
 
-If you need to create an interactive app consider using the [`charterm`](https://docs.racket-lang.org/charterm/index.html) package.
+-   *Artist* is set to *Peter Crowcroft*;
+-   *Album* is set to *Mice All Over*;
+-   *Title* is set to *1 P.C. - Mice All Over* for the first file, all
+    titles enumerated;
 
-# How to create an executable 
+```{=html}
+<!-- -->
+```
+    Source Album $ prokrust -dst . /run/media/user/F8950/Audiobooks/
 
-`$ raco exe -o hello hello.rkt`
-
-This will create an executabe `hello` or `hello.exe` depending on your platform.
-
-For help
-
-`$ ./hello -h` or `hello.exe -h` 
-
-
-Creating executables: https://docs.racket-lang.org/raco/exe.html
-
-Command-line parsing: https://docs.racket-lang.org/reference/Command-Line_Parsing.html
-
-### Testing command-line parsing: 
-
-Use the DrRacket `drracket-cmdline-args` plugin: https://docs.racket-lang.org/drracket-cmdline-args/
-
-Install:  `raco pkg install drracket-cmdline-args`
-
-![drracket-cmdline-args](https://docs.racket-lang.org/drracket-cmdline-args/screenshot.png)
-
+-   *Source Album* directory is copied to
+    */run/media/user/F8950/Audiobooks/* in its entirety, without
+    modification; sequential copy order, natural or lexicographical, is
+    guaranteed.
