@@ -7,9 +7,13 @@ from pathlib import Path
 
 SRC_DIRS = (".",)
 EXTENSIONS = (".RKT",)
+EXCLUDE = (".git",)
 
 for dir in SRC_DIRS:
-    for root, _, files in os.walk(Path(dir).resolve()):
+    for root, dirs, files in os.walk(Path(dir).resolve()):
+        for ex in EXCLUDE:
+            if ex in dirs:
+                dirs.remove(ex)
         for name in files:
             if Path(name).suffix.upper() in EXTENSIONS:
                 target = Path(root) / name
