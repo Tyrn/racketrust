@@ -7,16 +7,36 @@ from pathlib import Path
 
 SRC_DIRS = (".",)
 EXTENSIONS = (".RKT",)
-EXCLUDE = (".git",)
+EXCLUDE = set(
+    [
+        ".git",
+    ]
+)
 
-for dir in SRC_DIRS:
-    for root, dirs, files in os.walk(Path(dir).resolve()):
-        for ex in EXCLUDE:
-            if ex in dirs:
-                dirs.remove(ex)
-        for name in files:
-            if Path(name).suffix.upper() in EXTENSIONS:
-                target = Path(root) / name
-                subprocess.run(["raco", "fmt", "-i", target])
-                if len(sys.argv) > 1 and sys.argv[1] == "-v":
+
+def dry_run():
+    for dir in SRC_DIRS:
+        for root, dirs, files in os.walk(dir):
+            dirs[:] = [d for d in set(dirs) - EXCLUDE]
+
+            for name in files:
+                print(f"root/name: {root}/{name}")
+
+
+def fmt():
+    for dir in SRC_DIRS:
+        for root, dirs, files in os.walk(dir):
+            dirs[:] = [d for d in set(dirs) - EXCLUDE]
+
+            for name in files:
+                if Path(name).suffix.upper() in EXTENSIONS:
+                    target = Path(root).resolve() / name
+                    subprocess.run(["raco", "fmt", "-i", target])
                     print(target.relative_to(os.getcwd()))
+
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == "-y":
+        dry_run()
+    else:
+        fmt()
