@@ -54,7 +54,7 @@
 (define (form-initial name)
   "Makes an initial out of name,
   handling special cases like von, Mc, O', etc."
-  (let ([cut (string-split name #"'")])
+  (let ([cut (string-split name "'")])
     (cond
       ;; Deal with O'Connor and d'Artagnan.
       [(and (> (length cut) 1) (not (non-empty-string? (list-ref cut 1))))
@@ -112,24 +112,25 @@
     (lambda (author)
       (let* ([replaced
               (regexp-replace* #px"\"(?:\\.|\\[^\"\\])*\"" authors " ")] ;; Remove quoted substrings.
-             [odd-quotes-replaced (regexp-replace* #\" replaced " ")] ;; Remove odd quotes.
-             [split-authors (string-split odd-quotes-replaced #",")]
+             [odd-quotes-replaced (regexp-replace* #px"\"" replaced " ")] ;; Remove odd quotes.
+             [split-authors (string-split odd-quotes-replaced ",")]
              [filtered-authors (filter (lambda (author)
                                          (not (string-blank? (regexp-replace* #px"[-.]+" author ""))))
                                        split-authors)]
              [formatted-authors
               (map (lambda (author)
-                     (let* ([split-barrels (string-split author #"-")]
+                     (let* ([split-barrels (string-split author "-")]
                             [filtered-barrels
                              (filter (lambda (barrel)
                                        (not (string-blank? (regexp-replace* #px"[.]+" + barrel ""))))
                                      split-barrels)]
-                            [raw-initials (map form-initial filtered-barrels)]
+                            ;[raw-initials (map form-initial filtered-barrels)]
+                            [raw-initials filtered-barrels]
                             [joined-barrels (string-join raw-initials ".")])
                        joined-barrels))
                    filtered-authors)])
         (string-join formatted-authors "-")))
-    (string-split authors #","))))
+    (string-split authors ","))))
 
 (module+ test
   ;; Any code in this `test` submodule runs when this file is run using DrRacket
