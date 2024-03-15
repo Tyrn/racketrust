@@ -4,3 +4,21 @@
 [![Racket Discord](https://img.shields.io/discord/571040468092321801?label=Chat%20on%20Racket%20Discord&logo=racket)](https://discord.gg/6Zq8sH5)
 
 # Racketrust a.k.a. Damastes
+
+## Notes
+
+- [Generators, streams and recursion](https://racket.discourse.group/t/walking-a-file-tree-as-a-study-in-recursive-generators/2787)
+- [Enumerated stream](https://racket.discourse.group/t/enumerated-stream/2790)
+- [Source formatting](https://github.com/sorawee/fmt)
+
+```
+$ raco pkg install fmt
+$ raco fmt -i <file>
+```
+
+- [Templates](https://github.com/racket-templates)
+
+```
+$ raco pkg install from-template
+$ raco new cli-command <directory-to-be-created>
+```

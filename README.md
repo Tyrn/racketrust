@@ -115,53 +115,47 @@ root directory name_
 
 ## Examples
 
-    Source Album $ racketrust -c . .
+```
+Source Album $ racketrust -c . .
+```
 
 - All the files in _Source Album_ get checked. Destination directory
   is required (and ignored).
 
-```{=html}
-<!-- -->
 ```
-
-    Source Album $ racketrust -y . .
+Source Album $ racketrust -y . .
+```
 
 - Dry run: everything is done according to any options; no new files
   or directories created, destination is left undisturbed.
 
-```{=html}
-<!-- -->
 ```
-
-    Source Album $ racketrust -a "Peter Crowcroft" -m "Mice All Over" . /run/media/user/F8950/Audiobooks/
+Source Album $ racketrust -a "Peter Crowcroft" -m "Mice All Over" . /run/media/user/F8950/Audiobooks/
+```
 
 - Destination directory _/run/media/user/F8950/Audiobooks/Source
   Album/_ is created;
 - Track numbers are set according to the natural sort order,
   regardless of the absence of the original leading zeroes:
 
-```{=html}
-<!-- -->
 ```
-
-    01-mice-all-over-1.mp3
-    02-mice-all-over-2.mp3
-    ...
-    09-mice-all-over-9.mp3
-    10-mice-all-over-10.mp3
-    11-mice-all-over-11.mp3
-    ...
+01-mice-all-over-1.mp3
+02-mice-all-over-2.mp3
+...
+09-mice-all-over-9.mp3
+10-mice-all-over-10.mp3
+11-mice-all-over-11.mp3
+...
+```
 
 - _Artist_ is set to _Peter Crowcroft_;
 - _Album_ is set to _Mice All Over_;
 - _Title_ is set to _1 P.C. - Mice All Over_ for the first file, all
   titles enumerated;
 
-```{=html}
-<!-- -->
 ```
-
-    Source Album $ racketrust -dst . /run/media/user/F8950/Audiobooks/
+Source Album $ racketrust -dst . /run/media/user/F8950/Audiobooks/
+```
 
 - _Source Album_ directory is copied to
   _/run/media/user/F8950/Audiobooks/_ in its entirety, without
