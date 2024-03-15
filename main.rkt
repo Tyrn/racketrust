@@ -124,8 +124,8 @@
                              (filter (lambda (barrel)
                                        (not (string-blank? (regexp-replace* #px"[.]+" + barrel ""))))
                                      split-barrels)]
-                            [initials (map form-initial filtered-barrels)]
-                            [joined-barrels (string-join initials ".")])
+                            [raw-initials (map form-initial filtered-barrels)]
+                            [joined-barrels (string-join raw-initials ".")])
                        joined-barrels))
                    filtered-authors)])
         (string-join formatted-authors "-")))
