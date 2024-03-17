@@ -19,6 +19,14 @@
                           (stream-lazy (traverse dir))))
                  files))
 
+;; Function to traverse directories backwards and produce a flat and lazy stream of files
+(define (t-raverse parent)
+  (define-values (dirs files) (children parent))
+  (stream-append files
+                 (apply stream-append
+                        (for/list ([dir (in-list dirs)])
+                          (stream-lazy (t-raverse dir))))))
+
 (define reds (stream-cons "red" reds))
 
 ; Main function to traverse directories and print matching files
@@ -27,7 +35,7 @@
   (displayln (format "dirs: ~a" dirs))
   (displayln (format "files: ~a" files))
 
-  (for ([item (in-stream (traverse "."))] [idx (in-naturals 1)])
+  (for ([item (in-stream (t-raverse "."))] [idx (in-naturals 1)])
     (printf "~a ~a\n" idx item)))
 
 ; Run the main function
