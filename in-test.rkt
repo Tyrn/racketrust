@@ -2,7 +2,7 @@
 
 (require rackunit
          racket/match
-         "smallin.rkt")
+         (prefix-in small: "smallin.rkt"))
 
 (define (block-check fn data-block [message ""] [print? #f])
   (for ([i data-block])
@@ -15,4 +15,4 @@
   '((("ron reagan-smith") "R.R-S.") (("Nell Guinn") "N.G.")
                                     (("john ronald reuel Tolkien") "J.R.R.T.")))
 
-(block-check initials initials-block "initials test" #t)
+(block-check small:initials initials-block "initials test" #t)
