@@ -9,7 +9,7 @@
     (match-define (list in out) i)
     (check-equal? (apply fn in) out message)
     (when print?
-      (printf "'~a' '~a'\n" in out))))
+      (printf "~v ~v\n" in out))))
 
 (define initials-block
   (list (list (list "ron reagan-smith") "R.R-S.")
