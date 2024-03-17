@@ -4,13 +4,16 @@
          racket/match
          "smallin.rkt")
 
-(define (block-check data-block [message ""] [print? #f])
+(define (block-check fn data-block [message ""] [print? #f])
   (for ([i data-block])
     (match-define (list in out) i)
-    (check-equal? (initials in) out message)
-    (when print? (printf "'~a' '~a'\n" in out))))
+    (check-equal? (apply fn in) out message)
+    (when print?
+      (printf "'~a' '~a'\n" in out))))
 
 (define initials-block
-  (list '("ron reagan-smith" "R.R-S.") '("Nell Guinn" "N.G.") '("ben lazar" "B.L.")))
+  (list (list (list "ron reagan-smith") "R.R-S.")
+        (list (list "Nell Guinn") "N.G.")
+        (list (list "john ronald reuel Tolkien") "J.R.R.T.")))
 
-(block-check initials-block "initials test" #t)
+(block-check initials initials-block "initials test" #t)
