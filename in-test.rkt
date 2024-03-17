@@ -12,8 +12,7 @@
       (printf "~v ~v\n" in out))))
 
 (define initials-block
-  (list (list (list "ron reagan-smith") "R.R-S.")
-        (list (list "Nell Guinn") "N.G.")
-        (list (list "john ronald reuel Tolkien") "J.R.R.T.")))
+  '((("ron reagan-smith") "R.R-S.") (("Nell Guinn") "N.G.")
+                                    (("john ronald reuel Tolkien") "J.R.R.T.")))
 
 (block-check initials initials-block "initials test" #t)
