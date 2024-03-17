@@ -12,20 +12,30 @@
     (values dirs files)))
 
 ;; Function to traverse directories and produce a flat and lazy stream of files
-(define (traverse parent)
+(define (traverse-one parent)
   (define-values (dirs files) (children parent))
   (stream-append (apply stream-append
                         (for/list ([dir (in-list dirs)])
-                          (stream-lazy (traverse dir))))
+                          (stream-lazy (traverse-one dir))))
                  files))
 
 ;; Function to traverse directories backwards and produce a flat and lazy stream of files
-(define (t-raverse parent)
+(define (t-raverse-one parent)
   (define-values (dirs files) (children parent))
   (stream-append files
                  (apply stream-append
                         (for/list ([dir (in-list dirs)])
-                          (stream-lazy (t-raverse dir))))))
+                          (stream-lazy (t-raverse-one dir))))))
+
+;; Function to traverse directories and produce a flat and lazy stream of files
+(define (traverse parent)
+  (stream-lazy (let-values ([(dirs files) (children parent)])
+                 (stream-append (apply stream-append (map traverse dirs)) files))))
+
+;; Function to traverse directories backwards and produce a flat and lazy stream of files
+(define (t-raverse parent)
+  (stream-lazy (let-values ([(dirs files) (children parent)])
+                 (stream-append files (apply stream-append (map t-raverse dirs))))))
 
 (define reds (stream-cons "red" reds))
 
