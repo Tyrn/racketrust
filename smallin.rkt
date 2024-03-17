@@ -18,6 +18,6 @@
                               "-")
                  "."))
 
-(provide authors-join)
-(define (authors-join authors)
+(provide initials)
+(define (initials authors)
   (string-join (map (λ (author) (barrels-join author)) (by-authors-split authors)) ","))

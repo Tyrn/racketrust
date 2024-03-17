@@ -3,4 +3,4 @@
 (require rackunit
          "smallin.rkt")
 
-(check-equal? (authors-join "ron reagan-smith") "R.R-S." "First try")
+(check-equal? (initials "ron reagan-smith") "R.R-S." "First try")
