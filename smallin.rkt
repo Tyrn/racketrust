@@ -21,16 +21,16 @@
   (filter (λ ([author : String]) (non-empty-string? (regexp-replace* #px"[\\s.\\-]+" author "")))
           (string-split coauthors ",")))
 
-(: initials-join (-> String String))
-(define (initials-join author)
-  (string-join (map (λ (name) (initial-create name)) (into-names-split author)) "."))
+(: names-split-n-join (-> String String))
+(define (names-split-n-join barrel)
+  (string-join (map (λ (name) (initial-create name)) (into-names-split barrel)) "."))
 
-(: barrels-join (-> String String))
-(define (barrels-join barrels)
-  (string-append (string-join (map (λ (barrel) (initials-join barrel)) (into-barrels-split barrels))
+(: barrels-split-n-join (-> String String))
+(define (barrels-split-n-join barrels)
+  (string-append (string-join (map (λ (barrel) (names-split-n-join barrel)) (into-barrels-split barrels))
                               "-")
                  "."))
 
 (: initials (-> String String))
 (define (initials coauthors)
-  (string-join (map (λ (author) (barrels-join author)) (into-authors-split coauthors)) ","))
+  (string-join (map (λ (author) (barrels-split-n-join author)) (into-authors-split coauthors)) ","))
