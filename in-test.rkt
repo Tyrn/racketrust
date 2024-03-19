@@ -15,6 +15,6 @@
 (block-check + plus-block "+" #t)
 
 (define initials-block
-  '((("ron reagan-smith") "R.R-S.") (("Nell Guinn") "N.G.")
+  '((("ron reagan-smith") "R.R-S.") (("Nell \t Guinn") "N.G.")
                                     (("john ronald reuel Tolkien") "J.R.R.T.")))
 (block-check small:initials initials-block "initials" #t)

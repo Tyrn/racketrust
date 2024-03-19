@@ -9,7 +9,7 @@
 
 (: by-names-split (-> String (Listof String)))
 (define (by-names-split author)
-  (regexp-split #rx"[ .]+" author))
+  (regexp-split #px"[\\s.]+" author))
 
 (: by-barrels-split (-> String (Listof String)))
 (define (by-barrels-split barrels)
