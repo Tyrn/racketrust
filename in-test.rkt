@@ -14,6 +14,8 @@
 (define plus-block '(((2 2) 4) ((3 4) 7) ((1 1 1) 3)))
 (block-check + plus-block "+" #t)
 
+(check-equal? (regexp-replace* #px"[\\s.\\-]+" "  - .. -- -" "") "" "all junk")
+
 (define initials-block
   '((("ron reagan-smith") "R.R-S.") (("Nell \t Guinn") "N.G.")
                                     (("john ronald reuel Tolkien") "J.R.R.T.")))

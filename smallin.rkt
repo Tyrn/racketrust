@@ -13,11 +13,13 @@
 
 (: by-barrels-split (-> String (Listof String)))
 (define (by-barrels-split barrels)
-  (string-split barrels "-"))
+  (filter (λ ([barrel : String]) (non-empty-string? (regexp-replace* #px"[\\s.]+" barrel "")))
+          (string-split barrels "-")))
 
 (: by-authors-split (-> String (Listof String)))
 (define (by-authors-split authors)
-  (string-split authors ","))
+  (filter (λ ([author : String]) (non-empty-string? (regexp-replace* #px"[\\s.\\-]+" author "")))
+          (string-split authors ",")))
 
 (: initials-join (-> String String))
 (define (initials-join author)
