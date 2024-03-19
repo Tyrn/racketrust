@@ -2,7 +2,7 @@
 
 (require rackunit
          racket/match
-         (prefix-in small: "smallin.rkt"))
+         (prefix-in small: "initials.rkt"))
 
 (define (block-check fn data-block [message ""] [print? #f])
   (for ([i data-block])
