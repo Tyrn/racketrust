@@ -9,15 +9,20 @@
   (string-upcase (substring str 0 1)))
 
 (define (initials coauthors)
+  ;; Returns the string without double-quoted (") substrings; drops an odd
+  ;; double-quote too, if any.
   (define (nicknames-drop coauthors)
     (string-replace (regexp-replace* #rx"\"(?:\\.|[^\"\\])*\"" coauthors " ") "\"" " "))
 
+  ;; At least one character besides trash (spaces, dots, and dashes).
   (define (valid-author? author)
     (non-empty-string? (regexp-replace* #px"[\\s.\\-]+" author "")))
 
+  ;; At least one character besides trash (spaces and dots).
   (define (valid-barrel? barrel)
     (non-empty-string? (regexp-replace* #px"[\\s.]+" barrel "")))
 
+  ;; Splits a string on spaces and/or dots.
   (define (into-valid-names-split barrel)
     (filter non-empty-string? (regexp-split #px"[\\s.]+" barrel)))
 

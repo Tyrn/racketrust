@@ -14,6 +14,8 @@
 (define plus-block '(((2 2) 4) ((3 4) 7) ((1 1 1) 3)))
 (block-check + plus-block "+" #t)
 
+(check-equal? (regexp-split #px"[\\s.]+" "") '("") "Split an empty string on something")
+
 (check-equal? (regexp-replace* #px"[\\s.\\-]+" " . .. \t - . -- .. -- -" "")
               ""
               "Remove all spaces, dots, and dashes")
