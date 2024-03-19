@@ -10,6 +10,33 @@
   (string-upcase (substring str 0 1)))
 
 (define (initials coauthors)
+  (define (author->initialed-author author)
+    (define (barrel->initialed-names barrel)
+      (let* ([s (filter non-empty-string?
+                        (regexp-split #px"[\\s.]+" barrel))] ;; Split into valid names.
+             [s (map initial-create s)] ;; Convert names to initials.
+             [s (string-join s ".")]) ;; The last initial without dot cover.
+        s))
+
+    (let* ([s (string-split author "-")]
+           [s (filter (λ (barrel) (non-empty-string? (regexp-replace* #px"[\\s.]+" barrel "")))
+                      s)] ;; Valid barrel may pass.
+           [s (map barrel->initialed-names s)]
+           [s (string-join s "-")]
+           [s (string-append s ".")]) ;; On author the final dot.
+      s))
+
+  (let* ([s (string-replace (regexp-replace* #rx"\"(?:\\.|[^\"\\])*\"" coauthors " ")
+                            "\""
+                            " ")] ;; Drop double-quoted (") substrings. Odd double-quote, too.
+         [s (string-split s ",")]
+         [s (filter (λ (author) (non-empty-string? (regexp-replace* #px"[\\s.\\-]+" author "")))
+                    s)] ;; Valid author may pass.
+         [s (map author->initialed-author s)]
+         [s (string-join s ",")])
+    s))
+
+(define (initials-1 coauthors)
   ;; Returns the string without double-quoted (") substrings; drops an odd
   ;; double-quote too, if any.
   (define (nicknames-drop coauthors)
@@ -40,7 +67,7 @@
         (filter (λ (author) (valid-author? author)) (string-split (nicknames-drop coauthors) ",")))
    ","))
 
-(define (initials-1 coauthors)
+(define (initials-2 coauthors)
   (define (nicknames-drop coauthors)
     (string-replace (regexp-replace* #rx"\"(?:\\.|[^\"\\])*\"" coauthors " ") "\"" " "))
 
@@ -67,7 +94,7 @@
                     (into-authors-split (nicknames-drop coauthors)))
                ","))
 
-(define (initials-2 coauthors)
+(define (initials-3 coauthors)
   (string-join
    (map (λ (author)
           (string-append
@@ -85,39 +112,3 @@
                  (string-replace (regexp-replace* #rx"\"(?:\\.|[^\"\\])*\"" coauthors " ") "\"" " ")
                  ",")))
    ","))
-
-(define (initials-3 coauthors)
-  (define (author->initialed-author author)
-    (define (barrel->initialed-names barrel)
-      (let* ([s (filter non-empty-string?
-                        (regexp-split #px"[\\s.]+" barrel))] ;; Split into valid names.
-             [s (map initial-create s)] ;; Convert names to initials.
-             [s (string-join s ".")]) ;; The last initial without dot cover.
-        s))
-
-    ;; At least one character besides trash (spaces and dots).
-    (define (valid-barrel? barrel)
-      (non-empty-string? (regexp-replace* #px"[\\s.]+" barrel "")))
-
-    (let* ([s (string-split author "-")]
-           [s (filter valid-barrel? s)]
-           [s (map barrel->initialed-names s)]
-           [s (string-join s "-")]
-           [s (string-append s ".")]) ;; author->initialed-author: the final dot.
-      s))
-
-  ;; Returns the string without double-quoted (") substrings; drops an odd
-  ;; double-quote too, if any.
-  (define (nicknames-drop coauthors)
-    (string-replace (regexp-replace* #rx"\"(?:\\.|[^\"\\])*\"" coauthors " ") "\"" " "))
-
-  ;; At least one character besides trash (spaces, dots, and dashes).
-  (define (valid-author? author)
-    (non-empty-string? (regexp-replace* #px"[\\s.\\-]+" author "")))
-
-  (let* ([s (nicknames-drop coauthors)]
-         [s (string-split s ",")]
-         [s (filter valid-author? s)]
-         [s (map author->initialed-author s)]
-         [s (string-join s ",")])
-    s))
