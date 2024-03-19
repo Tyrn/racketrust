@@ -8,18 +8,18 @@
   (string-upcase (substring str 0 1)))
 
 (: into-names-split (-> String (Listof String)))
-(define (into-names-split author)
-  (regexp-split #px"[\\s.]+" author))
+(define (into-names-split barrel)
+  (filter non-empty-string? (regexp-split #px"[\\s.]+" barrel)))
 
 (: into-barrels-split (-> String (Listof String)))
-(define (into-barrels-split barrels)
+(define (into-barrels-split author)
   (filter (λ ([barrel : String]) (non-empty-string? (regexp-replace* #px"[\\s.]+" barrel "")))
-          (string-split barrels "-")))
+          (string-split author "-")))
 
 (: into-authors-split (-> String (Listof String)))
-(define (into-authors-split authors)
+(define (into-authors-split coauthors)
   (filter (λ ([author : String]) (non-empty-string? (regexp-replace* #px"[\\s.\\-]+" author "")))
-          (string-split authors ",")))
+          (string-split coauthors ",")))
 
 (: initials-join (-> String String))
 (define (initials-join author)
@@ -32,5 +32,5 @@
                  "."))
 
 (: initials (-> String String))
-(define (initials authors)
-  (string-join (map (λ (author) (barrels-join author)) (into-authors-split authors)) ","))
+(define (initials coauthors)
+  (string-join (map (λ (author) (barrels-join author)) (into-authors-split coauthors)) ","))
