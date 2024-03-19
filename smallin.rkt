@@ -17,13 +17,14 @@
   (filter (λ (author) (non-empty-string? (regexp-replace* #px"[\\s.\\-]+" author "")))
           (string-split coauthors ",")))
 
-(define (names-split-n-join barrel)
+(define (into-names-split-n-join barrel)
   (string-join (map (λ (name) (initial-create name)) (into-names-split barrel)) "."))
 
-(define (barrels-split-n-join barrels)
-  (string-append (string-join (map (λ (barrel) (names-split-n-join barrel)) (into-barrels-split barrels))
-                              "-")
-                 "."))
+(define (into-barrels-split-n-join author)
+  (string-append
+   (string-join (map (λ (barrel) (into-names-split-n-join barrel)) (into-barrels-split author)) "-")
+   "."))
 
 (define (initials coauthors)
-  (string-join (map (λ (author) (barrels-split-n-join author)) (into-authors-split coauthors)) ","))
+  (string-join (map (λ (author) (into-barrels-split-n-join author)) (into-authors-split coauthors))
+               ","))
