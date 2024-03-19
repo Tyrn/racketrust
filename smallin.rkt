@@ -25,6 +25,10 @@
    (string-join (map (λ (barrel) (into-names-split-n-join barrel)) (into-barrels-split author)) "-")
    "."))
 
+(define (nicknames-drop coauthors)
+  (string-replace (regexp-replace* #rx"\"(?:\\.|[^\"\\])*\"" coauthors " ") "\"" " "))
+
 (define (initials coauthors)
-  (string-join (map (λ (author) (into-barrels-split-n-join author)) (into-authors-split coauthors))
+  (string-join (map (λ (author) (into-barrels-split-n-join author))
+                    (into-authors-split (nicknames-drop coauthors)))
                ","))
