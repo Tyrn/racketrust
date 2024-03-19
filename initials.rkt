@@ -3,7 +3,8 @@
 
 (provide initials
          initials-1
-         initials-2)
+         initials-2
+         initials-3)
 
 (define (initial-create str)
   (string-upcase (substring str 0 1)))
@@ -84,3 +85,51 @@
                  (string-replace (regexp-replace* #rx"\"(?:\\.|[^\"\\])*\"" coauthors " ") "\"" " ")
                  ",")))
    ","))
+
+(define nick-name-pattern #rx"\"(?:\\.|[^\"\\])*\"")
+
+#; {String -> String}
+(define (initials-3 coauthors)
+  (let* ([s (nicknames-drop coauthors)]
+         [s (string-split s ",")]
+         [s (filter valid-author? s)]
+         [s (map author->somethiing s)]
+         [s (string-join s ",")])
+    s))
+
+;; -----------------------------------------------------------------------------
+#; {String -> String}
+(define (nicknames-drop coauthors)
+  (string-replace (regexp-replace* nick-name-pattern coauthors " ") "\"" " "))
+
+;; -----------------------------------------------------------------------------
+#; {String _> Boolean}
+(define (valid-author? author)
+  (non-empty-string? (regexp-replace* #px"[\\s.\\-]+" author "")))
+
+;; -----------------------------------------------------------------------------
+;; convert author to initials, if it consists of valid barrels 
+
+#; {String -> String}
+(define (author->somethiing author)
+  (let* ([s (string-split author "-")]
+         [s (filter valid-barrel? s)]
+         [s (map barrel->something s)]
+         [s (string-join s "-")]
+         [s (string-append s ".")])
+    s))
+
+#; {String -> Boolean}
+(define (valid-barrel? barrel)
+  (non-empty-string? (regexp-replace* #px"[\\s.]+" barrel "")))
+
+#; {String -> String}
+(define (barrel->something barrel)
+  (let* ([s (into-valid-names-split barrel)]
+         [s (map initial-create s)]
+         [s (string-join s ".")])
+    s))
+
+#; {String ->  [Listof Boolean]}
+(define (into-valid-names-split barrel)
+  (filter non-empty-string? (regexp-split #px"[\\s.]+" barrel)))
