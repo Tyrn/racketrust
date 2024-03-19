@@ -2,7 +2,7 @@
 
 (require rackunit
          racket/match
-         (prefix-in small: "initials.rkt"))
+         (prefix-in sign: "initials.rkt"))
 
 (define (block-check fn data-block [message ""] [print? #f])
   (for ([i data-block])
@@ -69,6 +69,6 @@
               ;(("Джордж Смит паттон ст") "Д.С.П.ст.")
               ;(("Redington Sr") "R.Sr.")
               (("John ronald reuel Tolkien") "J.R.R.T.")))
-(block-check small:initials initials-block "initials" #t)
-(block-check small:initials-1 initials-block "initials" #f)
-(block-check small:initials-2 initials-block "initials" #f)
+(block-check sign:initials initials-block "initials" #t)
+(block-check sign:initials-1 initials-block "initials" #f)
+(block-check sign:initials-2 initials-block "initials" #f)
