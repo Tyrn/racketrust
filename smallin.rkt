@@ -6,29 +6,29 @@
 (define (initial-create str)
   (string-upcase (substring str 0 1)))
 
-(define (into-names-split barrel)
-  (filter non-empty-string? (regexp-split #px"[\\s.]+" barrel)))
-
-(define (into-barrels-split author)
-  (filter (λ (barrel) (non-empty-string? (regexp-replace* #px"[\\s.]+" barrel "")))
-          (string-split author "-")))
-
-(define (into-authors-split coauthors)
-  (filter (λ (author) (non-empty-string? (regexp-replace* #px"[\\s.\\-]+" author "")))
-          (string-split coauthors ",")))
-
-(define (into-names-split-n-join barrel)
-  (string-join (map (λ (name) (initial-create name)) (into-names-split barrel)) "."))
-
-(define (into-barrels-split-n-join author)
-  (string-append
-   (string-join (map (λ (barrel) (into-names-split-n-join barrel)) (into-barrels-split author)) "-")
-   "."))
-
-(define (nicknames-drop coauthors)
-  (string-replace (regexp-replace* #rx"\"(?:\\.|[^\"\\])*\"" coauthors " ") "\"" " "))
-
 (define (initials coauthors)
+  (define (nicknames-drop coauthors)
+    (string-replace (regexp-replace* #rx"\"(?:\\.|[^\"\\])*\"" coauthors " ") "\"" " "))
+
+  (define (into-authors-split coauthors)
+    (filter (λ (author) (non-empty-string? (regexp-replace* #px"[\\s.\\-]+" author "")))
+            (string-split coauthors ",")))
+
+  (define (into-barrels-split-n-join author)
+    (define (into-names-split-n-join barrel)
+      (define (into-names-split barrel)
+        (filter non-empty-string? (regexp-split #px"[\\s.]+" barrel)))
+
+      (string-join (map (λ (name) (initial-create name)) (into-names-split barrel)) "."))
+
+    (define (into-barrels-split author)
+      (filter (λ (barrel) (non-empty-string? (regexp-replace* #px"[\\s.]+" barrel "")))
+              (string-split author "-")))
+
+    (string-append
+     (string-join (map (λ (barrel) (into-names-split-n-join barrel)) (into-barrels-split author)) "-")
+     "."))
+
   (string-join (map (λ (author) (into-barrels-split-n-join author))
                     (into-authors-split (nicknames-drop coauthors)))
                ","))
