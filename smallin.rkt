@@ -1,7 +1,8 @@
 #lang racket/base
 (require racket/string)
 
-(provide initials)
+(provide initials
+         inits)
 
 (define (initial-create str)
   (string-upcase (substring str 0 1)))
@@ -32,3 +33,22 @@
   (string-join (map (λ (author) (into-barrels-split-n-join author))
                     (into-authors-split (nicknames-drop coauthors)))
                ","))
+
+(define (inits coauthors)
+  (string-join
+   (map (λ (author)
+          (string-append
+           (string-join
+            (map (λ (barrel)
+                   (string-join (map (λ (name) (initial-create name))
+                                     (filter non-empty-string? (regexp-split #px"[\\s.]+" barrel)))
+                                "."))
+                 (filter (λ (barrel) (non-empty-string? (regexp-replace* #px"[\\s.]+" barrel "")))
+                         (string-split author "-")))
+            "-")
+           "."))
+        (filter (λ (author) (non-empty-string? (regexp-replace* #px"[\\s.\\-]+" author "")))
+                (string-split
+                 (string-replace (regexp-replace* #rx"\"(?:\\.|[^\"\\])*\"" coauthors " ") "\"" " ")
+                 ",")))
+   ","))

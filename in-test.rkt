@@ -69,4 +69,5 @@
               ;(("Джордж Смит паттон ст") "Д.С.П.ст.")
               ;(("Redington Sr") "R.Sr.")
               (("John ronald reuel Tolkien") "J.R.R.T.")))
-(block-check small:initials initials-block "initials" #t)
+(block-check small:initials initials-block "initials" #f)
+(block-check small:inits initials-block "inits" #t)
