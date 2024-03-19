@@ -123,8 +123,7 @@
 
 #;{String -> String}
 (define (barrel->initialed-names barrel)
-  (let* ([s (into-valid-names-split barrel)] [s (map initial-create s)] [s (string-join s ".")]) s))
-
-#;{String -> [Listof Boolean]}
-(define (into-valid-names-split barrel)
-  (filter non-empty-string? (regexp-split #px"[\\s.]+" barrel)))
+  (let* ([s (filter non-empty-string? (regexp-split #px"[\\s.]+" barrel))] ;; Split into valid names.
+         [s (map initial-create s)] ;; Convert names to initials.
+         [s (string-join s ".")]) ;; The last initial without dot cover.
+    s))
