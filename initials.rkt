@@ -2,12 +2,39 @@
 (require racket/string)
 
 (provide initials
-         inits)
+         initials-1
+         initials-2)
 
 (define (initial-create str)
   (string-upcase (substring str 0 1)))
 
 (define (initials coauthors)
+  (define (nicknames-drop coauthors)
+    (string-replace (regexp-replace* #rx"\"(?:\\.|[^\"\\])*\"" coauthors " ") "\"" " "))
+
+  (define (valid-author? author)
+    (non-empty-string? (regexp-replace* #px"[\\s.\\-]+" author "")))
+
+  (define (valid-barrel? barrel)
+    (non-empty-string? (regexp-replace* #px"[\\s.]+" barrel "")))
+
+  (define (into-valid-names-split barrel)
+    (filter non-empty-string? (regexp-split #px"[\\s.]+" barrel)))
+
+  (string-join
+   (map (λ (author)
+          (string-append (string-join (map (λ (barrel)
+                                             (string-join (map (λ (name) (initial-create name))
+                                                               (into-valid-names-split barrel))
+                                                          "."))
+                                           (filter (λ (barrel) (valid-barrel? barrel))
+                                                   (string-split author "-")))
+                                      "-")
+                         "."))
+        (filter (λ (author) (valid-author? author)) (string-split (nicknames-drop coauthors) ",")))
+   ","))
+
+(define (initials-1 coauthors)
   (define (nicknames-drop coauthors)
     (string-replace (regexp-replace* #rx"\"(?:\\.|[^\"\\])*\"" coauthors " ") "\"" " "))
 
@@ -34,7 +61,7 @@
                     (into-authors-split (nicknames-drop coauthors)))
                ","))
 
-(define (inits coauthors)
+(define (initials-2 coauthors)
   (string-join
    (map (λ (author)
           (string-append
