@@ -1,6 +1,8 @@
 #lang racket/base
 (require racket/string)
 
+(provide initials)
+
 (define (initial-create str)
   (string-upcase (substring str 0 1)))
 
@@ -18,6 +20,5 @@
                               "-")
                  "."))
 
-(provide initials)
 (define (initials authors)
   (string-join (map (λ (author) (barrels-join author)) (by-authors-split authors)) ","))
