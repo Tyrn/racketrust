@@ -7,7 +7,8 @@
          initials-3)
 
 (define (initial-create str)
-  (string-upcase (substring str 0 1)))
+  (let ([tic (regexp-match #px".*?'([^']{1})" str)])
+    (if (not (equal? tic #f)) (list-ref tic 0) (string-upcase (substring str 0 1)))))
 
 (define (initials coauthors)
   (define (author->initialed-author author)
