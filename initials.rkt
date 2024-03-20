@@ -1,14 +1,30 @@
 #lang racket/base
-(require racket/string)
+(require racket/string
+         racket/list)
 
 (provide initials
          initials-1
          initials-2
          initials-3)
 
+(define (prefix str)
+  (define char* (string->list str))
+  (let while ([char* (rest char*)] [result (list (first char*))])
+    (cond
+      [(empty? char*) (list->string (reverse result))]
+      [else
+       (define c (first char*))
+       (cond
+         [(char-upper-case? c) (list->string (reverse (cons c result)))]
+         [(char-lower-case? c) (while (rest char*) (cons c result))]
+         #;unspecified:
+         [else (while (rest char*) result)])])))
+
 (define (initial-create str)
-  (let ([tic (regexp-match #px".*?'([^']{1})" str)])
-    (if (not (equal? tic #f)) (list-ref tic 0) (string-upcase (substring str 0 1)))))
+  (let ([o-neal (regexp-match #px".*?'([^']{1})" str)])
+    (if (not (equal? o-neal #f))
+        (list-ref o-neal 0)
+        (let ([stub (prefix str)]) (if (equal? stub str) (string-upcase (substring str 0 1)) stub)))))
 
 (define (initials coauthors)
   (define (author->initialed-author author)
