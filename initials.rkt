@@ -49,8 +49,8 @@
           "от"
           "the"))
 
-(define (name-prefix str)
-  (define char* (string->list str))
+(define (name-prefix name)
+  (define char* (string->list name))
   (let while ([char* (rest char*)] [result (list (first char*))])
     (cond
       [(empty? char*) (list->string (reverse result))]
@@ -61,15 +61,15 @@
          [(char-lower-case? c) (while (rest char*) (cons c result))]
          [else (while (rest char*) result)])])))
 
-(define (initial-create str)
-  (define sax-gen (regexp-match #px".*?'([^']{1})" str))
+(define (initial-create name)
+  (define sax-gen (regexp-match #px".*?'([^']{1})" name))
   (cond
     [sax-gen (first sax-gen)]
-    [(member str nobiliary-particles) (substring str 0 1)]
+    [(member name nobiliary-particles) (substring name 0 1)]
     [else
-     (define stub (name-prefix str))
+     (define stub (name-prefix name))
      (cond
-       [(equal? stub (string-replace str "'" "")) (string-upcase (substring str 0 1))]
+       [(equal? stub (string-replace name "'" "")) (string-upcase (substring name 0 1))]
        [else stub])]))
 
 (define (initials coauthors)
