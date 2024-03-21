@@ -7,6 +7,48 @@
          initials-2
          initials-3)
 
+(define nobiliary-particles
+  '("von" "фон"
+          "van"
+          "ван"
+          "der"
+          "дер"
+          "til"
+          "тиль"
+          "zu"
+          "цу"
+          "zum"
+          "цум"
+          "zur"
+          "цур"
+          "af"
+          "аф"
+          "of"
+          "из"
+          "da"
+          "да"
+          "de"
+          "де"
+          "des"
+          "дез"
+          "del"
+          "дель"
+          "di"
+          "ди"
+          "dos"
+          "душ"
+          "дос"
+          "du"
+          "дю"
+          "la"
+          "ла"
+          "ля"
+          "le"
+          "ле"
+          "haut"
+          "от"
+          "the"))
+
 (define (name-prefix str)
   (define char* (string->list str))
   (let while ([char* (rest char*)] [result (list (first char*))])
@@ -23,6 +65,7 @@
   (define sax-gen (regexp-match #px".*?'([^']{1})" str))
   (cond
     [sax-gen (first sax-gen)]
+    [(member str nobiliary-particles) (substring str 0 1)]
     [else
      (define stub (name-prefix str))
      (cond
