@@ -20,11 +20,14 @@
          [else (while (rest char*) result)])])))
 
 (define (initial-create str)
-  (let ([o-neal (regexp-match #px".*?'([^']{1})" str)])
-    (if o-neal
-        (car o-neal)
-        (let ([stub (name-prefix str)])
-          (if (equal? stub (string-replace str "'" "")) (string-upcase (substring str 0 1)) stub)))))
+  (define sax-gen (regexp-match #px".*?'([^']{1})" str))
+  (cond
+    [sax-gen (first sax-gen)]
+    [else
+     (define stub (name-prefix str))
+     (cond
+       [(equal? stub (string-replace str "'" "")) (string-upcase (substring str 0 1))]
+       [else stub])]))
 
 (define (initials coauthors)
   (define (author->initialed-author author)
