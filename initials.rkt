@@ -49,18 +49,6 @@
           "от"
           "the"))
 
-(define (name-prefix name)
-  (define char* (string->list name))
-  (let while ([char* (rest char*)] [result (list (first char*))])
-    (cond
-      [(empty? char*) (list->string (reverse result))]
-      [else
-       (define c (first char*))
-       (cond
-         [(char-upper-case? c) (list->string (reverse (cons c result)))]
-         [(char-lower-case? c) (while (rest char*) (cons c result))]
-         [else (while (rest char*) result)])])))
-
 (define (initial-create name)
   (define full-nior
     (case name
@@ -69,6 +57,8 @@
       [else #f]))
   (define nior (member name '("Ст" "ст" "Sr" "Мл" "мл" "Jr")))
   (define sax-gen (regexp-match #px".*?'([^']{1})" name))
+  (define (name-prefix s)
+    (car (regexp-match #px"^.\\p{Ll}*\\p{Lu}?" s)))
   (cond
     [sax-gen (first sax-gen)]
     [(member name nobiliary-particles) (substring name 0 1)]
