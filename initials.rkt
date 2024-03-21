@@ -7,7 +7,7 @@
          initials-2
          initials-3)
 
-(define (prefix str)
+(define (name-prefix str)
   (define char* (string->list str))
   (let while ([char* (rest char*)] [result (list (first char*))])
     (cond
@@ -22,8 +22,8 @@
 (define (initial-create str)
   (let ([o-neal (regexp-match #px".*?'([^']{1})" str)])
     (if (not (equal? o-neal #f))
-        (list-ref o-neal 0)
-        (let ([stub (prefix str)])
+        (car o-neal)
+        (let ([stub (name-prefix str)])
           (if (equal? stub (string-replace str "'" "")) (string-upcase (substring str 0 1)) stub)))))
 
 (define (initials coauthors)
