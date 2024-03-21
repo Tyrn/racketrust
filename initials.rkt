@@ -62,10 +62,18 @@
          [else (while (rest char*) result)])])))
 
 (define (initial-create name)
+  (define full-nior
+    (case name
+      [("Старший") "Ст"]
+      [("Младший") "Мл"]
+      [else #f]))
+  (define nior (member name '("Ст" "ст" "Sr" "Мл" "мл" "Jr")))
   (define sax-gen (regexp-match #px".*?'([^']{1})" name))
   (cond
     [sax-gen (first sax-gen)]
     [(member name nobiliary-particles) (substring name 0 1)]
+    [full-nior full-nior]
+    [nior (first nior)]
     [else
      (define stub (name-prefix name))
      (cond
