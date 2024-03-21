@@ -17,18 +17,7 @@
        (cond
          [(char-upper-case? c) (list->string (reverse (cons c result)))]
          [(char-lower-case? c) (while (rest char*) (cons c result))]
-         #;unspecified:
          [else (while (rest char*) result)])])))
-
-;(define (prefix str)
-;  (define char* (string->list str))
-;  (for/fold ([result (list (first char*))] #:result (list->string (reverse result)))
-;            ([c (in-list (rest char*))])
-;    #:final (char-upper-case? c)
-;    (cons c result)))
-
-;(define (prefix s)
-;  (car (regexp-match #px"^.[[:lower:]]*[[:upper:]]?" s)))
 
 (define (initial-create str)
   (let ([o-neal (regexp-match #px".*?'([^']{1})" str)])
