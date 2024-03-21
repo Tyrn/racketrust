@@ -21,7 +21,7 @@
 
 (define (initial-create str)
   (let ([o-neal (regexp-match #px".*?'([^']{1})" str)])
-    (if (not (equal? o-neal #f))
+    (if o-neal
         (car o-neal)
         (let ([stub (name-prefix str)])
           (if (equal? stub (string-replace str "'" "")) (string-upcase (substring str 0 1)) stub)))))
