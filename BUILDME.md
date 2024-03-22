@@ -9,6 +9,7 @@
 
 - [Cycles and regular expressions](https://racket.discourse.group/t/break-out-of-the-cycle-whats-the-racket-way-alternative/2814)
 - [Generators, streams and recursion](https://racket.discourse.group/t/walking-a-file-tree-as-a-study-in-recursive-generators/2787) (Walking a file tree)
+- [Split-map-join](https://racket.discourse.group/t/nested-split-map-join-preferred-style/2809)
 - [Enumerated stream](https://racket.discourse.group/t/enumerated-stream/2790)
 - [Source formatting](https://github.com/sorawee/fmt)
 
