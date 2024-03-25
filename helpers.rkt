@@ -9,7 +9,7 @@
     [(> bytes 1)
      (let* ([xp (min (exact-floor (log bytes 1024)) (- (length XB) 1))] [qt (/ bytes (expt 1024 xp))])
        (cond
-         [(= (cdr (list-ref XB xp)) 0) (format "~a~a" (~r qt #:precision 0) (car (list-ref XB xp)))]
+         [(= (cdr (list-ref XB xp)) 0) (~a (~r qt #:precision 0) (car (list-ref XB xp)))]
          [(= (cdr (list-ref XB xp)) 1) (format "~0,1F~a" qt (car (list-ref XB xp)))]
          [(= (cdr (list-ref XB xp)) 2) (format "~0,2F~a" qt (car (list-ref XB xp)))]
          [else (error "Fatal error: human-fine(): unexpected decimals count.")]))]
