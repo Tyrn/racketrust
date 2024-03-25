@@ -85,6 +85,7 @@
               ((1200) "1kB")
               ((1800) "2kB")
               ((123456789) "117.7MB")
+              ((1073741824) "1.00GB")
               ((123456789123) "114.98GB")))
 (block-check helpers:human-fine human-fine-block "human-fine" #t)
 
