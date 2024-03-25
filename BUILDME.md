@@ -11,6 +11,7 @@
 - [Generators, streams and recursion](https://racket.discourse.group/t/walking-a-file-tree-as-a-study-in-recursive-generators/2787) (Walking a file tree)
 - [Split-map-join](https://racket.discourse.group/t/nested-split-map-join-preferred-style/2809)
 - [Enumerated stream](https://racket.discourse.group/t/enumerated-stream/2790)
+- [All flavors of format](https://racket.discourse.group/t/srfi-48-is-it-possible-to-get-rid-of-the-decimal-point/2836)
 - [Source formatting](https://github.com/sorawee/fmt)
 
 ```

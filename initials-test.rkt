@@ -80,14 +80,15 @@
 
 (define human-fine-block
   '(((0) "0") ((1) "1")
-              ((42) "42.")
-              ((1200) "1.kB")
-              ((1800) "2.kB")
+              ((42) "42")
+              ((1024) "1kB")
+              ((1200) "1kB")
+              ((1800) "2kB")
               ((123456789) "117.7MB")
-              ((123456789123) "114.98GB")
-              ((1024) "1.kB")))
+              ((123456789123) "114.98GB")))
 (block-check helpers:human-fine human-fine-block "human-fine" #t)
 
-(check-equal? (helpers:human-fine (expt 1024 2)) "1.0MB" "")
-(check-equal? (helpers:human-fine (expt 1024 3)) "1.00GB" "")
-(check-equal? (helpers:human-fine (expt 1024 4)) "1.00TB" "")
+(check-equal? (helpers:human-fine (expt 1024 2)) "1.0MB" "(human-fine (expt 1024 2))")
+(check-equal? (helpers:human-fine (expt 1024 3)) "1.00GB" "(human-fine (expt 1024 3))")
+(check-equal? (helpers:human-fine (expt 1024 4)) "1.00TB" "(human-fine (expt 1024 4))")
+(check-equal? (helpers:human-fine (expt 1024 5)) "1.00PB" "(human-fine (expt 1024 5))")
