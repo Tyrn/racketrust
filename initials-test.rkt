@@ -2,7 +2,8 @@
 
 (require rackunit
          racket/match
-         (prefix-in sign: "initials.rkt"))
+         (prefix-in sign: "initials.rkt")
+         (prefix-in helpers: "helpers.rkt"))
 
 (define (block-check fn data-block [message ""] [print? #f])
   (for ([i data-block])
@@ -76,3 +77,16 @@
 (block-check sign:initials-1 initials-block "initials-1" #f)
 (block-check sign:initials-2 initials-block "initials-2" #f)
 (block-check sign:initials-3 initials-block "initials-3" #f)
+
+(define human-fine-block
+  '(((0) "0") ((1) "1")
+              ((42) "42.")
+              ((1800) "2.kB")
+              ((123456789) "117.7MB")
+              ((123456789123) "114.98GB")
+              ((1024) "1.kB")))
+(block-check helpers:human-fine human-fine-block "human-fine" #t)
+
+(check-equal? (helpers:human-fine (expt 1024 2)) "1.0MB" "")
+(check-equal? (helpers:human-fine (expt 1024 3)) "1.00GB" "")
+(check-equal? (helpers:human-fine (expt 1024 4)) "1.00TB" "")
