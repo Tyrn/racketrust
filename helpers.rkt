@@ -6,15 +6,12 @@
   (define fb (exact->inexact bytes))
   (cond
     [(> bytes 1)
-     (let* ([exponent (min (inexact->exact (log fb 1024.0)) (- (length UNIT-LIST) 1))]
-            [quotient (/ fb (expt 1024.0 exponent))])
+     (let* ([xp (min (inexact->exact (log fb 1024.0)) (- (length UNIT-LIST) 1))]
+            [qt (/ fb (expt 1024.0 xp))])
        (cond
-         [(= (cdr (list-ref UNIT-LIST exponent)) 0)
-          (format ".0f~a~a" quotient (car (list-ref UNIT-LIST exponent)))]
-         [(= (cdr (list-ref UNIT-LIST exponent)) 1)
-          (format ".1f~a~a" quotient (car (list-ref UNIT-LIST exponent)))]
-         [(= (cdr (list-ref UNIT-LIST exponent)) 2)
-          (format ".2f~a~a" quotient (car (list-ref UNIT-LIST exponent)))]
+         [(= (cdr (list-ref UNIT-LIST xp)) 0) (format ".0f~a~a" qt (car (list-ref UNIT-LIST xp)))]
+         [(= (cdr (list-ref UNIT-LIST xp)) 1) (format ".1f~a~a" qt (car (list-ref UNIT-LIST xp)))]
+         [(= (cdr (list-ref UNIT-LIST xp)) 2) (format ".2f~a~a" qt (car (list-ref UNIT-LIST xp)))]
          [else (error "Fatal error: human-fine(): unexpected decimals count.")]))]
     [(= bytes 0) "0"]
     [(= bytes 1) "1"]
