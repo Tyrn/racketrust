@@ -12,13 +12,29 @@
       (printf "~v ~v\n" in out))))
 
 (define plus-block '(((2 2) 4) ((3 4) 7) ((1 1 1) 3)))
-(block-check + plus-block "+" #t)
+(block-check + plus-block "+" #f)
 
 (check-equal? (regexp-split #px"[\\s.]+" "") '("") "Split an empty string on something")
 
 (check-equal? (regexp-replace* #px"[\\s.\\-]+" " . .. \t - . -- .. -- -" "")
               ""
               "Remove all spaces, dots, and dashes")
+
+(define human-fine-block
+  '(((0) "0") ((1) "1")
+              ((42) "42")
+              ((1024) "1kB")
+              ((1200) "1kB")
+              ((1800) "2kB")
+              ((123456789) "117.7MB")
+              ((1073741824) "1.00GB")
+              ((123456789123) "114.98GB")))
+(block-check helpers:human-fine human-fine-block "human-fine" #f)
+
+(check-equal? (helpers:human-fine (expt 1024 2)) "1.0MB" "(human-fine (expt 1024 2))")
+(check-equal? (helpers:human-fine (expt 1024 3)) "1.00GB" "(human-fine (expt 1024 3))")
+(check-equal? (helpers:human-fine (expt 1024 4)) "1.00TB" "(human-fine (expt 1024 4))")
+(check-equal? (helpers:human-fine (expt 1024 5)) "1.00PB" "(human-fine (expt 1024 5))")
 
 (define initials-block
   '((("") "") ((" ") "")
@@ -72,20 +88,4 @@
               (("Джордж Смит паттон ст") "Д.С.П.ст.")
               (("Redington Sr") "R.Sr.")
               (("John ronald reuel Tolkien") "J.R.R.T.")))
-(block-check helpers:initials initials-block "initials" #t)
-
-(define human-fine-block
-  '(((0) "0") ((1) "1")
-              ((42) "42")
-              ((1024) "1kB")
-              ((1200) "1kB")
-              ((1800) "2kB")
-              ((123456789) "117.7MB")
-              ((1073741824) "1.00GB")
-              ((123456789123) "114.98GB")))
-(block-check helpers:human-fine human-fine-block "human-fine" #t)
-
-(check-equal? (helpers:human-fine (expt 1024 2)) "1.0MB" "(human-fine (expt 1024 2))")
-(check-equal? (helpers:human-fine (expt 1024 3)) "1.00GB" "(human-fine (expt 1024 3))")
-(check-equal? (helpers:human-fine (expt 1024 4)) "1.00TB" "(human-fine (expt 1024 4))")
-(check-equal? (helpers:human-fine (expt 1024 5)) "1.00PB" "(human-fine (expt 1024 5))")
+(block-check helpers:initials initials-block "initials" #f)

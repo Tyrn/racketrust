@@ -90,7 +90,7 @@
       (let* ([s (filter non-empty-string?
                         (regexp-split #px"[\\s.]+" barrel))] ; Split into valid names.
              [s (map initial-create s)] ; Convert names to initials.
-             [s (string-join s ".")]) ; The last initial without dot cover.
+             [s (string-join s ".")]) ; The last initial remains without dot cover.
         s))
 
     (let* ([s (string-split author "-")]
