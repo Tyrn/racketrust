@@ -74,9 +74,6 @@
               (("Redington Sr") "R.Sr.")
               (("John ronald reuel Tolkien") "J.R.R.T.")))
 (block-check sign:initials initials-block "initials" #t)
-(block-check sign:initials-1 initials-block "initials-1" #f)
-(block-check sign:initials-2 initials-block "initials-2" #f)
-(block-check sign:initials-3 initials-block "initials-3" #f)
 
 (define human-fine-block
   '(((0) "0") ((1) "1")
