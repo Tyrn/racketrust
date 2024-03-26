@@ -70,8 +70,8 @@
       [("Младший") "Мл"]
       [else #f]))
   (define nior (member name '("Ст" "ст" "Sr" "Мл" "мл" "Jr")))
-  (define sax-gen (regexp-match #px".*?'([^']{1})" name))
-  (define (name-prefix s)
+  (define sax-gen (regexp-match #px".*?'([^']{1})" name)) ; Takes care of O'Connor.
+  (define (name-prefix s) ; Takes care of DiCaprio.
     (car (regexp-match #px"^.\\p{Ll}*\\p{Lu}?" s)))
   (cond
     [sax-gen (first sax-gen)]
@@ -98,7 +98,7 @@
                       s)] ; Valid barrel may pass.
            [s (map barrel->initialed-names s)]
            [s (string-join s "-")]
-           [s (string-append s ".")]) ; On author the final dot.
+           [s (string-append s ".")]) ; The final barrel gets the final dot.
       s))
 
   (let* ([s (string-replace (regexp-replace* #rx"\"(?:\\.|[^\"\\])*\"" coauthors " ")
